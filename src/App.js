@@ -1,20 +1,20 @@
-import './App.css';
-import { useEffect, useMemo, useState } from 'react';
-import clefImage from './clef.png';
+import "./App.css";
+import { useEffect, useMemo, useState } from "react";
+import clefImage from "./clef.png";
 
 const NOTE_STEPS = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const NOTE_NAME_BY_STEP = {
-  '-1': 're',
-  0: 'mi',
-  1: 'fa',
-  2: 'sol',
-  3: 'la',
-  4: 'si',
-  5: 'do',
-  6: 're',
-  7: 'mi',
-  8: 'fa',
-  9: 'sol',
+  "-1": "re",
+  0: "mi",
+  1: "fa",
+  2: "sol",
+  3: "la",
+  4: "si",
+  5: "do",
+  6: "re",
+  7: "mi",
+  8: "fa",
+  9: "sol",
 };
 
 const STAFF_BASE = {
@@ -80,14 +80,17 @@ const buildNotes = (count) =>
   });
 
 function App() {
-  const [noteCount, setNoteCount] = useState(() => getNoteCountForWidth(window.innerWidth));
+  const [noteCount, setNoteCount] = useState(() =>
+    getNoteCountForWidth(window.innerWidth)
+  );
   const [notes, setNotes] = useState(() => buildNotes(noteCount));
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const staff = useMemo(() => getStaffConfig(noteCount), [noteCount]);
   const noteStepSize = staff.lineSpacing / 2;
   const staffBottom = staff.top + staff.lineSpacing * 4;
   const noteSpacing = useMemo(
-    () => (staff.width - staff.leftPadding - staff.rightPadding) / (noteCount - 1),
+    () =>
+      (staff.width - staff.leftPadding - staff.rightPadding) / (noteCount - 1),
     [noteCount, staff.leftPadding, staff.rightPadding, staff.width]
   );
   const staffLines = useMemo(
@@ -111,8 +114,12 @@ function App() {
       });
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 
   const refreshNotes = () => {
@@ -128,12 +135,10 @@ function App() {
           <div>
             <h1>Gördüğün notaları isimlendir</h1>
             <p className="App-subtitle">
-              Aşağıdaki her nota için doğru adı (do, re, mi, fa, sol, la, si) zihninden söyle.
+              Aşağıdaki her nota için doğru adı (do, re, mi, fa, sol, la, si)
+              zihninden söyle.
             </p>
           </div>
-          <button type="button" className="App-button" onClick={refreshNotes}>
-            Yeni notalar getir
-          </button>
         </header>
 
         <section className="Staff-card">
@@ -150,17 +155,24 @@ function App() {
               </linearGradient>
             </defs>
 
-            <rect x="30" y="30" width={staff.width - 60} height="160" rx="26" fill="url(#staffGlow)" />
+            <rect
+              x="30"
+              y="30"
+              width={staff.width - 60}
+              height="160"
+              rx="26"
+              fill="url(#staffGlow)"
+            />
 
             {staffLines.map((line, index) => (
-                <line
-                  key={`line-${index}`}
-                  x1="60"
-                  x2={staff.width - 40}
-                  y1={line.y}
-                  y2={line.y}
-                  className="Staff-line"
-                />
+              <line
+                key={`line-${index}`}
+                x1="60"
+                x2={staff.width - 40}
+                y1={line.y}
+                y2={line.y}
+                className="Staff-line"
+              />
             ))}
 
             <image
@@ -192,13 +204,15 @@ function App() {
               return (
                 <g
                   key={note.id}
-                  className={`Staff-note${note.id === selectedNoteId ? ' is-selected' : ''}`}
+                  className={`Staff-note${
+                    note.id === selectedNoteId ? " is-selected" : ""
+                  }`}
                   role="button"
                   tabIndex={0}
                   aria-label={`${index + 1}. nota`}
                   onClick={() => setSelectedNoteId(note.id)}
                   onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
+                    if (event.key === "Enter" || event.key === " ") {
                       setSelectedNoteId(note.id);
                     }
                   }}
@@ -213,8 +227,8 @@ function App() {
                   <ellipse
                     cx={x}
                     cy={y}
-                    rx={headWidth / 2+1 }
-                    ry={headHeight / 2 +1}
+                    rx={headWidth / 2 + 1}
+                    ry={headHeight / 2 + 1}
                     transform={`rotate(-18 ${x} ${y})`}
                   />
                   <line
@@ -234,10 +248,13 @@ function App() {
                 Seçili nota: <strong>{selectedNote.name}</strong>
               </>
             ) : (
-              'Notaya tıklayınca adı burada görünecek.'
+              "Notaya tıklayınca adı burada görünecek."
             )}
           </div>
         </section>
+        <button type="button" className="App-button" onClick={refreshNotes}>
+          Yeni notalar getir
+        </button>
       </main>
     </div>
   );
