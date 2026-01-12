@@ -2,8 +2,20 @@ import './App.css';
 import { useMemo, useState } from 'react';
 
 const NOTE_COUNT = 10;
-const NOTE_STEPS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-const NOTE_NAMES = ['mi', 'fa', 'sol', 'la', 'si', 'do', 're', 'mi', 'fa'];
+const NOTE_STEPS = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const NOTE_NAME_BY_STEP = {
+  '-1': 're',
+  0: 'mi',
+  1: 'fa',
+  2: 'sol',
+  3: 'la',
+  4: 'si',
+  5: 'do',
+  6: 're',
+  7: 'mi',
+  8: 'fa',
+  9: 'sol',
+};
 
 const STAFF = {
   width: 900,
@@ -25,7 +37,7 @@ const buildNotes = (count) =>
     return {
       id: `${Date.now()}-${index}-${Math.random()}`,
       step,
-      name: NOTE_NAMES[step],
+      name: NOTE_NAME_BY_STEP[step],
     };
   });
 

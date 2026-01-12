@@ -62,9 +62,8 @@
 .Staff-card {
   background: rgba(255, 255, 255, 0.82);
   border-radius: 28px;
-  padding: 18px;
-  box-shadow: 0 20px 60px rgba(30, 25, 19, 0.12);
-  border: 1px solid rgba(140, 114, 80, 0.25);
+  box-shadow: 0 24px 60px rgba(30, 25, 19, 0.12);
+  border: 1px solid rgba(140, 114, 80, 0.2);
   backdrop-filter: blur(8px);
 }
 
@@ -76,8 +75,8 @@
 
 .Staff-line {
   stroke: #3c2f22;
-  stroke-width: 2;
-  opacity: 0.85;
+  stroke-width: 1.6;
+  opacity: 0.9;
 }
 
 .Staff-clef {
@@ -85,6 +84,16 @@
   font-family: 'Noto Music', 'Bravura Text', serif;
   fill: #3c2f22;
   opacity: 0.9;
+}
+
+.Staff-clef--small {
+  font-size: 92px;
+}
+
+.Staff-time {
+  font-size: 32px;
+  font-family: 'Cinzel', serif;
+  fill: #3c2f22;
 }
 
 .Staff-note ellipse {
@@ -110,8 +119,14 @@
   fill: #4a2d10;
 }
 
+.Staff-note .is-hollow {
+  fill: #f7efe4;
+  stroke: #1f1710;
+  stroke-width: 2;
+}
+
 .Staff-answer {
-  margin-top: 14px;
+  margin-bottom: 14px;
   text-align: center;
   font-size: 1rem;
   color: #5b4c3b;
@@ -120,6 +135,46 @@
 .Staff-answer strong {
   color: #1a1713;
   font-weight: 700;
+}
+
+.Rhythm-card {
+  gap: 18px;
+}
+
+.Rhythm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 4px 10px 10px;
+}
+
+.Rhythm-header h2 {
+  margin: 0 0 6px;
+  font-family: 'Cinzel', serif;
+  font-size: 1.35rem;
+}
+
+.Rhythm-header p {
+  margin: 0;
+  color: #5b4c3b;
+}
+
+.Staff-flag {
+  fill: none;
+  stroke: #1f1710;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.Staff-beam {
+  fill: #1f1710;
+}
+
+.Staff-bar {
+  stroke: #3c2f22;
+  stroke-width: 1.8;
 }
 
 .App-help {
