@@ -162,14 +162,15 @@ function App() {
                 />
             ))}
 
-            <text
-              x="65"
-              y="120"
-              className="Staff-clef"
-              dominantBaseline="middle"
-            >
-              𝄞
-            </text>
+            <image
+              href={`${process.env.PUBLIC_URL}/sol.jpg`}
+              x="48"
+              y="38"
+              width="100"
+              height="144"
+              preserveAspectRatio="xMidYMid meet"
+              className="Staff-clef-image"
+            />
 
             {notes.map((note, index) => {
               const x = staff.leftPadding + index * noteSpacing;
