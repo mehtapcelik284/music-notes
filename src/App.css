@@ -111,12 +111,17 @@
 }
 
 .Staff-note:hover {
-  transform: translateY(-1px);
   opacity: 0.9;
 }
 
 .Staff-note.is-selected ellipse {
-  fill: #4a2d10;
+  fill: #f08a24;
+  stroke: #f08a24;
+  stroke-width: 3.2;
+}
+
+.Staff-note.is-selected .Staff-stem {
+  stroke: #f08a24;
 }
 
 .Staff-note .is-hollow {

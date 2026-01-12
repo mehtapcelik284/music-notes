@@ -1,7 +1,6 @@
 import './App.css';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-const NOTE_COUNT = 10;
 const NOTE_STEPS = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const NOTE_NAME_BY_STEP = {
   '-1': 're',
@@ -17,19 +16,57 @@ const NOTE_NAME_BY_STEP = {
   9: 'sol',
 };
 
-const STAFF = {
-  width: 900,
+const STAFF_BASE = {
   height: 220,
   top: 80,
   lineSpacing: 18,
-  leftPadding: 150,
-  rightPadding: 60,
 };
 
-const noteStepSize = STAFF.lineSpacing / 2;
-const staffBottom = STAFF.top + STAFF.lineSpacing * 4;
+const getStaffConfig = (count) => {
+  if (count <= 5) {
+    return {
+      ...STAFF_BASE,
+      width: 680,
+      leftPadding: 150,
+      rightPadding: 90,
+    };
+  }
+  if (count <= 6) {
+    return {
+      ...STAFF_BASE,
+      width: 700,
+      leftPadding: 120,
+      rightPadding: 40,
+    };
+  }
+  if (count <= 7) {
+    return {
+      ...STAFF_BASE,
+      width: 780,
+      leftPadding: 130,
+      rightPadding: 50,
+    };
+  }
+  return {
+    ...STAFF_BASE,
+    width: 900,
+    leftPadding: 150,
+    rightPadding: 60,
+  };
+};
 
-const getNoteY = (step) => staffBottom - step * noteStepSize;
+const getNoteY = (step, staffBottom, noteStepSize) =>
+  staffBottom - step * noteStepSize;
+
+const getNoteCountForWidth = (width) => {
+  if (width < 500) {
+    return 5;
+  }
+  if (width < 700) {
+    return 7;
+  }
+  return 10;
+};
 
 const buildNotes = (count) =>
   Array.from({ length: count }, (_, index) => {
@@ -42,22 +79,43 @@ const buildNotes = (count) =>
   });
 
 function App() {
-  const [notes, setNotes] = useState(() => buildNotes(NOTE_COUNT));
+  const [noteCount, setNoteCount] = useState(() => getNoteCountForWidth(window.innerWidth));
+  const [notes, setNotes] = useState(() => buildNotes(noteCount));
   const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const staff = useMemo(() => getStaffConfig(noteCount), [noteCount]);
+  const noteStepSize = staff.lineSpacing / 2;
+  const staffBottom = staff.top + staff.lineSpacing * 4;
   const noteSpacing = useMemo(
-    () => (STAFF.width - STAFF.leftPadding - STAFF.rightPadding) / (NOTE_COUNT - 1),
-    []
+    () => (staff.width - staff.leftPadding - staff.rightPadding) / (noteCount - 1),
+    [noteCount, staff.leftPadding, staff.rightPadding, staff.width]
   );
   const staffLines = useMemo(
     () =>
       Array.from({ length: 5 }, (_, index) => ({
-        y: staffBottom - index * STAFF.lineSpacing,
+        y: staffBottom - index * staff.lineSpacing,
       })),
-    []
+    [staff.lineSpacing, staffBottom]
   );
 
+  useEffect(() => {
+    const handleResize = () => {
+      const nextCount = getNoteCountForWidth(window.innerWidth);
+      setNoteCount((prevCount) => {
+        if (prevCount === nextCount) {
+          return prevCount;
+        }
+        setNotes(buildNotes(nextCount));
+        setSelectedNoteId(null);
+        return nextCount;
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const refreshNotes = () => {
-    setNotes(buildNotes(NOTE_COUNT));
+    setNotes(buildNotes(noteCount));
     setSelectedNoteId(null);
   };
   const selectedNote = notes.find((note) => note.id === selectedNoteId);
@@ -69,18 +127,18 @@ function App() {
           <div>
             <h1>Gördüğün notaları isimlendir</h1>
             <p className="App-subtitle">
-              Aşağıdaki çizgideki her nota için doğru adı (do, re, mi, fa, sol, la, si) zihninden söyle.
+              Aşağıdaki her nota için doğru adı (do, re, mi, fa, sol, la, si) zihninden söyle.
             </p>
           </div>
           <button type="button" className="App-button" onClick={refreshNotes}>
-            Yeni sorular getir
+            Yeni notalar getir
           </button>
         </header>
 
         <section className="Staff-card">
           <svg
             className="Staff"
-            viewBox={`0 0 ${STAFF.width} ${STAFF.height}`}
+            viewBox={`0 0 ${staff.width} ${staff.height}`}
             role="img"
             aria-label="Rastgele notalarla oluşturulmuş nota çizgisi"
           >
@@ -91,17 +149,17 @@ function App() {
               </linearGradient>
             </defs>
 
-            <rect x="30" y="30" width="840" height="160" rx="26" fill="url(#staffGlow)" />
+            <rect x="30" y="30" width={staff.width - 60} height="160" rx="26" fill="url(#staffGlow)" />
 
             {staffLines.map((line, index) => (
-              <line
-                key={`line-${index}`}
-                x1="60"
-                x2={STAFF.width - 40}
-                y1={line.y}
-                y2={line.y}
-                className="Staff-line"
-              />
+                <line
+                  key={`line-${index}`}
+                  x1="60"
+                  x2={staff.width - 40}
+                  y1={line.y}
+                  y2={line.y}
+                  className="Staff-line"
+                />
             ))}
 
             <text
@@ -114,8 +172,8 @@ function App() {
             </text>
 
             {notes.map((note, index) => {
-              const x = STAFF.leftPadding + index * noteSpacing;
-              const y = getNoteY(note.step);
+              const x = staff.leftPadding + index * noteSpacing;
+              const y = getNoteY(note.step, staffBottom, noteStepSize);
               const stemUp = note.step <= 4;
               const stemLength = 40;
               const headWidth = 21;
