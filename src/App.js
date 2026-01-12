@@ -1,5 +1,6 @@
 import './App.css';
 import { useEffect, useMemo, useState } from 'react';
+import clefImage from './clef.png';
 
 const NOTE_STEPS = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const NOTE_NAME_BY_STEP = {
@@ -43,8 +44,8 @@ const getStaffConfig = (count) => {
     return {
       ...STAFF_BASE,
       width: 780,
-      leftPadding: 130,
-      rightPadding: 50,
+      leftPadding: 150,
+      rightPadding: 80,
     };
   }
   return {
@@ -163,11 +164,12 @@ function App() {
             ))}
 
             <image
-              href={`${process.env.PUBLIC_URL}/sol.jpg`}
-              x="48"
+              href={clefImage}
+              xlinkHref={clefImage}
+              x="38"
               y="38"
               width="100"
-              height="144"
+              height="140"
               preserveAspectRatio="xMidYMid meet"
               className="Staff-clef-image"
             />
@@ -211,13 +213,13 @@ function App() {
                   <ellipse
                     cx={x}
                     cy={y}
-                    rx={headWidth / 2 }
-                    ry={headHeight / 2 }
+                    rx={headWidth / 2+1 }
+                    ry={headHeight / 2 +1}
                     transform={`rotate(-18 ${x} ${y})`}
                   />
                   <line
-                    x1={stemUp ? x + headWidth / 2 - 2 : x - headWidth / 2 + 2}
-                    x2={stemUp ? x + headWidth / 2 - 2 : x - headWidth / 2 + 2}
+                    x1={stemUp ? x + headWidth / 2 - 1 : x - headWidth / 2 + 1}
+                    x2={stemUp ? x + headWidth / 2 - 1 : x - headWidth / 2 + 1}
                     y1={y}
                     y2={stemUp ? y - stemLength : y + stemLength}
                     className="Staff-stem"

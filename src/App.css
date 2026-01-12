@@ -116,8 +116,6 @@
 
 .Staff-note.is-selected ellipse {
   fill: #f08a24;
-  stroke: #f08a24;
-  stroke-width: 3.2;
 }
 
 .Staff-note.is-selected .Staff-stem {
