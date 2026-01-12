@@ -80,7 +80,7 @@
 }
 
 .Staff-clef {
-  font-size: 120px;
+  font-size: clamp(72px, 12vw, 120px);
   font-family: 'Noto Music', 'Bravura Text', serif;
   fill: #3c2f22;
   opacity: 0.9;

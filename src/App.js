@@ -178,6 +178,13 @@ function App() {
               const stemLength = 40;
               const headWidth = 21;
               const headHeight = 14;
+              const hitPaddingX = 2;
+              const hitPaddingY = 2;
+              const headTop = y - headHeight / 2;
+              const headBottom = y + headHeight / 2;
+              const stemEndY = stemUp ? y - stemLength : y + stemLength;
+              const hitTop = Math.min(headTop, stemEndY) - hitPaddingY;
+              const hitBottom = Math.max(headBottom, stemEndY) + hitPaddingY;
 
               return (
                 <g
@@ -193,6 +200,13 @@ function App() {
                     }
                   }}
                 >
+                  <rect
+                    x={x - headWidth / 2 - hitPaddingX}
+                    y={hitTop}
+                    width={headWidth + hitPaddingX * 2}
+                    height={hitBottom - hitTop}
+                    fill="transparent"
+                  />
                   <ellipse
                     cx={x}
                     cy={y}
