@@ -123,7 +123,13 @@ function App() {
   }, []);
 
   const refreshNotes = () => {
-    setNotes(buildNotes(noteCount));
+    setNotes((prevNotes) => {
+      let newNotes;
+      do {
+        newNotes = buildNotes(noteCount);
+      } while (newNotes.every((note, i) => note.step === prevNotes[i]?.step));
+      return newNotes;
+    });
     setSelectedNoteId(null);
   };
   const selectedNote = notes.find((note) => note.id === selectedNoteId);
@@ -203,7 +209,7 @@ function App() {
 
               return (
                 <g
-                  key={note.id}
+                  key={index}
                   className={`Staff-note${
                     note.id === selectedNoteId ? " is-selected" : ""
                   }`}
